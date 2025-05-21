@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sandbox/application/bloc/conuter_bloc.dart';
+import 'package:flutter_sandbox/application/serviceBloc/service_bloc.dart';
+import 'package:flutter_sandbox/domain/ILoginRepo/ILoginRepo.dart';
+import 'package:flutter_sandbox/domain/core/dependency_injection/di_configuration.dart';
 import 'package:flutter_sandbox/presentation/home/home_screen.dart';
 import 'package:flutter_sandbox/presentation/profile/profile_screen.dart';
 
@@ -23,7 +26,10 @@ abstract class MyRouter {
         var arguments = settings.arguments as String;
         return MaterialPageRoute(
           builder: (context) {
-            return ProfileScreen(name: arguments);
+            return BlocProvider(
+              create: (context) => getIt<ServiceBloc>(),
+              child: ProfileScreen(name: arguments),
+            );
           },
         );
     }
