@@ -16,12 +16,20 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc({required this.userRepo}) : super(UserState.initial()) {
     on<LoadUsersEvent>((event, emit) async {
       emit(state.copyWith(isLoading: true, isLoaded: false, error: null));
-      try {
-        final users = await userRepo.getUsers();
-        emit(state.copyWith(isLoading: false, isLoaded: true, users: users));
-      } catch (e) {
-        emit(state.copyWith(isLoading: false, error: e.toString()));
-      }
+      final result = await userRepo.getUsers();
+      result.fold(
+        (failure) {
+          emit(
+              state.copyWith(isLoading: false, error: failure, isLoaded: true));
+        },
+        (users) {
+          emit(state.copyWith(
+            isLoading: false,
+            isLoaded: true,
+            users: users,
+          ));
+        },
+      );
     });
 
     UserState.registerEvents(this);

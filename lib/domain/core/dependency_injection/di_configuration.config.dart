@@ -9,12 +9,11 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter_sandbox/application/bloc/example_bloc/example_bloc.dart'
-    as _i887;
+import 'package:flutter_sandbox/application/example_bloc/example_bloc.dart'
+    as _i201;
 import 'package:flutter_sandbox/application/serviceBloc/service_bloc.dart'
     as _i365;
-import 'package:flutter_sandbox/application/UserServiceBloc/user_bloc.dart'
-    as _i57;
+import 'package:flutter_sandbox/application/UserBloc/user_bloc.dart' as _i569;
 import 'package:flutter_sandbox/domain/ILoginRepo/ILoginRepo.dart' as _i493;
 import 'package:flutter_sandbox/domain/ILoginRepo/ISignupRepo.dart' as _i381;
 import 'package:flutter_sandbox/domain/IUserRepo/IUserRepo.dart' as _i855;
@@ -36,11 +35,11 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i887.exampleBloc>(() => _i887.exampleBloc());
+    gh.factory<_i201.exampleBloc>(() => _i201.exampleBloc());
     gh.lazySingleton<_i493.Iloginrepo>(() => _i933.LoginRepositry());
     gh.lazySingleton<_i855.IUserRepo>(() => _i485.UserRepo());
-    gh.factory<_i57.UserBloc>(
-        () => _i57.UserBloc(userRepo: gh<_i855.IUserRepo>()));
+    gh.factory<_i569.UserBloc>(
+        () => _i569.UserBloc(userRepo: gh<_i855.IUserRepo>()));
     gh.factory<_i365.ServiceBloc>(() => _i365.ServiceBloc(
           loginrepo: gh<_i493.Iloginrepo>(),
           signupRepo: gh<_i381.ISignupRepo>(),

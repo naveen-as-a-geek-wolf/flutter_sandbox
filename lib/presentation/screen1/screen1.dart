@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sandbox/application/bloc/example_bloc/example_bloc.dart';
+import 'package:flutter_sandbox/application/example_bloc/example_bloc.dart';
 import 'package:flutter_sandbox/presentation/userList/users_list_screen.dart';
 
 class Screen1 extends StatelessWidget {

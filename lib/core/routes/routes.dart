@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sandbox/application/UserServiceBloc/user_bloc.dart';
+import 'package:flutter_sandbox/application/UserBloc/user_bloc.dart';
 import 'package:flutter_sandbox/application/bloc/counter_bloc/conuter_bloc.dart';
-import 'package:flutter_sandbox/application/bloc/example_bloc/example_bloc.dart';
+import 'package:flutter_sandbox/application/example_bloc/example_bloc.dart';
 import 'package:flutter_sandbox/application/serviceBloc/service_bloc.dart';
 import 'package:flutter_sandbox/domain/core/dependency_injection/di_configuration.dart';
 import 'package:flutter_sandbox/presentation/home/home_screen.dart';
