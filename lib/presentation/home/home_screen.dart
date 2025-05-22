@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           return GestureDetector(
               onTap: () {
+                
                BlocProvider.of<ConuterBloc>(context).add(UpdateCounter(counter: state.counter +1));
               },
               child: Container(
