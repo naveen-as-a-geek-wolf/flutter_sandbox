@@ -25,8 +25,12 @@ class UserScreen extends StatelessWidget {
           Expanded(
             child: BlocBuilder<UserServiceBloc, UserServiceState>(
               builder: (context, state) {
-                if (state.isLoading ?? false) {
+                if (state.isLoading) {
                   return const Center(child: CircularProgressIndicator());
+                }
+                final String error = state.error.toString();
+                if(state.error != null){
+                  return Center(child: Text(error));
                 }
 
                 final users = state.users ?? [];

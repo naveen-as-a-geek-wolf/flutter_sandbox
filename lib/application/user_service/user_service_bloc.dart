@@ -23,9 +23,10 @@ class UserServiceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     emit(state.copyWith(isLoading: true));
     try {
       final users = await _userRepository.fetchUsers();
-      emit(state.copyWith(users: users));
-    } catch (e) {
-      debugPrint('Error fetching users: $e');
+      users.fold(
+        (error) => emit(state.copyWith(error: error)),
+        (users) => emit(state.copyWith(users: users, error: null)),
+      );
     } finally {
       emit(state.copyWith(isLoading: false));
     }

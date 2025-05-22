@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import '../../domain/IUserReop/iuser_repo.dart';
@@ -10,13 +10,13 @@ class UserRepository implements IUserRepository {
   final String apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
   @override
-  Future<List<User>> fetchUsers() async {
+  Future<Either<String, List<User>>> fetchUsers() async {
     final response = await http.get(Uri.parse(apiUrl));
     if (response.statusCode == 200) {
       final List data = json.decode(response.body);
-      return data.map((json) => User.fromJson(json)).toList();
+      return Right(data.map((json) => User.fromJson(json)).toList());
     } else {
-      throw Exception('Failed to load users');
+      return left("error in gettin data");
     }
   }
 }

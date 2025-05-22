@@ -8,7 +8,7 @@ part of 'user_service_bloc.dart';
 
 // Events Generated for corresponding states in State Class
 class UpdateIsLoadingEvent extends UserServiceEvent {
-  final bool? isLoading;
+  final bool isLoading;
   const UpdateIsLoadingEvent({required this.isLoading});
 
   @override
@@ -23,45 +23,55 @@ class UpdateUsersEvent extends UserServiceEvent {
   List<Object?> get props => [users];
 }
 
+class UpdateErrorEvent extends UserServiceEvent {
+  final String? error;
+  const UpdateErrorEvent({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}
+
 /// A state class that represents the complete state of the 'UserServiceBloc'.
 /// This class is immutable and extends Equatable for value comparison.
 class UserServiceState extends Equatable {
-  final bool? isLoading;
+  final bool isLoading;
   final List<User>? users;
+  final String? error;
 
   /// Creates a new instance of UserServiceState with the given parameters.
-  const UserServiceState({this.isLoading, this.users});
+  const UserServiceState({required this.isLoading, this.users, this.error});
 
   /// Creates the initial state of the 'UserServiceBloc'.
   /// This method sets up default values for all state properties.
   static UserServiceState initial() {
-    return UserServiceState(isLoading: false, users: null);
+    return UserServiceState(isLoading: false, users: null, error: null);
   }
 
   /// Creates a copy of this state with the given parameters replaced.
   /// If a parameter is not provided, the value from the current state is used.
-  UserServiceState copyWith({bool? isLoading, List<User>? users}) {
+  UserServiceState copyWith(
+      {bool? isLoading, List<User>? users, String? error}) {
     return UserServiceState(
-        isLoading: isLoading ?? this.isLoading, users: users ?? this.users);
+        isLoading: isLoading ?? this.isLoading,
+        users: users ?? this.users,
+        error: error ?? this.error);
   }
 
   /// Creates a copy of this state with the ability to set specific fields to null.
   /// The boolean parameters control whether the corresponding field should be set to null.
-  UserServiceState copyWithNull({bool isLoading = false, bool users = false}) {
+  UserServiceState copyWithNull(
+      {bool? isLoading, bool users = false, bool error = false}) {
     return UserServiceState(
-        isLoading: isLoading ? null : this.isLoading,
-        users: users ? null : this.users);
+        isLoading: isLoading ?? this.isLoading,
+        users: users ? null : this.users,
+        error: error ? null : this.error);
   }
 
   /// Registers all event handlers for the 'UserServiceBloc'.
   /// This method sets up the event-to-state mapping for all possible state updates.
   static void registerEvents(UserServiceBloc bloc) {
     bloc.on<UpdateIsLoadingEvent>((event, emit) {
-      if (event.isLoading == null) {
-        emit(bloc.state.copyWithNull(isLoading: true));
-      } else {
-        emit(bloc.state.copyWith(isLoading: event.isLoading));
-      }
+      emit(bloc.state.copyWith(isLoading: event.isLoading));
     });
 
     bloc.on<UpdateUsersEvent>((event, emit) {
@@ -71,11 +81,19 @@ class UserServiceState extends Equatable {
         emit(bloc.state.copyWith(users: event.users));
       }
     });
+
+    bloc.on<UpdateErrorEvent>((event, emit) {
+      if (event.error == null) {
+        emit(bloc.state.copyWithNull(error: true));
+      } else {
+        emit(bloc.state.copyWith(error: event.error));
+      }
+    });
   }
 
   /// Returns a list of all properties used for equality comparison.
   @override
-  List<Object?> get props => [isLoading, users];
+  List<Object?> get props => [isLoading, users, error];
 }
 
 /// Extension on BuildContext that provides convenient methods for updating the 'UserServiceBloc' state.
@@ -87,14 +105,19 @@ extension UserServiceBlocContextExtension on BuildContext {
   void setUserServiceBlocState({
     dynamic isLoading = UnspecifiedDataType.instance,
     dynamic users = UnspecifiedDataType.instance,
+    dynamic error = UnspecifiedDataType.instance,
   }) {
     final myBloc = read<UserServiceBloc>(); // Read the MyBloc instance
     if (isLoading != UnspecifiedDataType.instance) {
-      myBloc.add(UpdateIsLoadingEvent(isLoading: isLoading as bool?));
+      myBloc.add(UpdateIsLoadingEvent(isLoading: isLoading as bool));
     }
 
     if (users != UnspecifiedDataType.instance) {
       myBloc.add(UpdateUsersEvent(users: users.cast<User>()));
+    }
+
+    if (error != UnspecifiedDataType.instance) {
+      myBloc.add(UpdateErrorEvent(error: error as String?));
     }
   }
 }
